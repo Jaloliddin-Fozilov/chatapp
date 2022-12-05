@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "333900943799",
+    "project_id": "flutter-chat-app-uz",
+    "storage_bucket": "flutter-chat-app-uz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333900943799:android:7e7882518b13c8d23b9832",
+        "android_client_info": {
+          "package_name": "uz.iportal.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333900943799-c8fuf8fr4qipjft8ncu1gfmj33a69mbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHZxj76Yz8VMPTe9Suo0biAyZw5yy96HM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333900943799-c8fuf8fr4qipjft8ncu1gfmj33a69mbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
