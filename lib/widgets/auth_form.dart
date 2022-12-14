@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
   final Function getUserDetails;
-  const AuthForm(this.getUserDetails, {super.key});
+  final bool isLoading;
+  const AuthForm(this.getUserDetails, this.isLoading, {super.key});
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -96,18 +97,21 @@ class _AuthFormState extends State<AuthForm> {
                     obscureText: true,
                   ),
                   const SizedBox(height: 15),
-                  ElevatedButton(
-                    onPressed: _submit,
-                    child: Text(_isLogin ? 'Kirish' : 'Ro\'yxatdan o\'tish'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
-                    child: Text(!_isLogin ? 'Kirish' : 'Ro\'yxatdan o\'tish'),
-                  )
+                  if (widget.isLoading) const CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    ElevatedButton(
+                      onPressed: _submit,
+                      child: Text(_isLogin ? 'Kirish' : 'Ro\'yxatdan o\'tish'),
+                    ),
+                  if (!widget.isLoading)
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                      child: Text(!_isLogin ? 'Kirish' : 'Ro\'yxatdan o\'tish'),
+                    )
                 ],
               ),
             ),

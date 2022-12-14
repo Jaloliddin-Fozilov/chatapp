@@ -1,4 +1,5 @@
 import 'package:chatapp/widgets/auth_form.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,20 +14,33 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
 
+  bool _isLoading = false;
+
   void _getUserDetails(
       String email, String username, String password, bool isLogin) async {
-    UserCredential _userCredential;
+    UserCredential userCredential;
+    setState(() {
+      _isLoading = true;
+    });
     try {
       if (isLogin) {
-        _userCredential = await _auth.signInWithEmailAndPassword(
+        userCredential = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
       } else {
-        _userCredential = await _auth.createUserWithEmailAndPassword(
+        userCredential = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'username': username,
+          'email': email,
+        });
       }
     } on FirebaseException catch (e) {
       var message =
@@ -49,8 +63,14 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
       );
+      setState(() {
+        _isLoading = false;
+      });
     } catch (e) {
       print(e);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -58,7 +78,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(_getUserDetails),
+      body: AuthForm(_getUserDetails, _isLoading),
     );
   }
 }
