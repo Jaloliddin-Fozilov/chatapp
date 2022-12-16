@@ -1,23 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class NewMessage extends StatelessWidget {
+class NewMessage extends StatefulWidget {
   NewMessage({super.key});
 
+  @override
+  State<NewMessage> createState() => _NewMessageState();
+}
+
+class _NewMessageState extends State<NewMessage> {
   final _formKey = GlobalKey<FormState>();
+
+  final _messageTextController = TextEditingController();
 
   String? _message;
 
   void _sendMessage() {
+    FocusScope.of(context).unfocus();
     _formKey.currentState!.save();
 
-    if (_message != null && _message!.isNotEmpty) {
+    if (_message != null && _message!.trim().isNotEmpty) {
       // send message
       FirebaseFirestore.instance.collection('chats').add(
         {
           'text': _message,
+          'createdAt': Timestamp.now(),
         },
       );
+      _messageTextController.clear();
     }
   }
 
@@ -37,6 +47,7 @@ class NewMessage extends StatelessWidget {
                 onSaved: (newValue) {
                   _message = newValue;
                 },
+                controller: _messageTextController,
               ),
             ),
             IconButton(
