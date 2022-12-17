@@ -30,6 +30,7 @@ class Messages extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: MessageBubble(
                 docs[i]['text'],
+                docs[i]['username'],
                 docs[i]['userId'] == user!.uid,
                 key: ValueKey(docs[i].id),
               ),
