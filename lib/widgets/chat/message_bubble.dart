@@ -1,17 +1,25 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
   final String message;
   final String username;
+  final String userImage;
   final bool isMe;
-  const MessageBubble(this.message, this.username, this.isMe, {super.key});
+  const MessageBubble(this.message, this.username, this.userImage, this.isMe,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
+        if (!isMe)
+          Padding(
+            padding: const EdgeInsets.only(right: 5.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(userImage),
+            ),
+          ),
         Container(
           width: MediaQuery.of(context).size.width * 0.6,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
@@ -45,6 +53,13 @@ class MessageBubble extends StatelessWidget {
             ],
           ),
         ),
+        if (isMe)
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(userImage),
+            ),
+          ),
       ],
     );
   }

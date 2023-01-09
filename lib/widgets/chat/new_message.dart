@@ -32,17 +32,21 @@ class _NewMessageState extends State<NewMessage> {
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
     _formKey.currentState!.save();
-
+    if (userData.data() == null) {
+      userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+    }
     if (_message != null && _message!.trim().isNotEmpty) {
       // send message
-      FirebaseFirestore.instance.collection('chats').add(
-        {
-          'text': _message,
-          'createdAt': Timestamp.now(),
-          'userId': user!.uid,
-          'username': userData.data()!['username'],
-        },
-      );
+      FirebaseFirestore.instance.collection('chats').add({
+        'text': _message,
+        'createdAt': Timestamp.now(),
+        'userId': user!.uid,
+        'userImage': userData.data()!['imageUrl'],
+        'username': userData.data()!['username'],
+      });
       _messageTextController.clear();
     }
   }
